@@ -1,13 +1,15 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
+import { is, sql } from "drizzle-orm";
 import {
   index,
   pgTableCreator,
   serial,
   timestamp,
   varchar,
+  boolean,
+  uuid,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -18,17 +20,21 @@ import {
  */
 export const createTable = pgTableCreator((name) => `kfupm-g-todo_${name}`);
 
-export const posts = createTable(
-  "post",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true }),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
+export const users = createTable("users", {
+  id: uuid('id').defaultRandom().primaryKey(),
+  username: varchar("username", { length: 256 }).notNull(),
+  password: varchar("password", { length: 256 }).notNull(),
+  email: varchar("email", { length: 256 }).notNull(),
+  isVerified: boolean("is_verified").default(false),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt"),
+  forgotPasswordToken: varchar("forgot_password_token", { length: 256 }),
+  forgotPasswordTokenExpiry: timestamp("forgot_password_token_expiry"),
+  verifyToken: varchar("verify_token", { length: 256 }),
+  verifyTokenExpiry: timestamp("verify_token_expiry"),
+
+});
+
+
