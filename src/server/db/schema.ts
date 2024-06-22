@@ -38,3 +38,22 @@ export const users = createTable("users", {
 });
 
 
+export const majors = createTable("majors", {
+  id: uuid('id').defaultRandom().primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  code: varchar("code", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+})
+
+export const subjects = createTable("majors", {
+  id: uuid('id').defaultRandom().primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  code: varchar("code", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+})
+
+

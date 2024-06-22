@@ -17,10 +17,9 @@ export async function POST(req: NextRequest) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       where: eq(users.username, username),
     });
-
     if (!user) {
       return NextResponse.json(
-        { error: "User does not exists" },
+        { error: "Invalid username or password" },
         { status: 400 },
       );
     }
@@ -32,14 +31,13 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
-
     const tokenData = {
       id: user.id,
       email: user.email,
       username: user.username,
     };
     const token =  jwt.sign(tokenData, process.env.TOKEN_SECRET!, {
-      expiresIn: "2h",
+      expiresIn: "20mins",
     });
     const response = NextResponse.json({
       accessToken: token,

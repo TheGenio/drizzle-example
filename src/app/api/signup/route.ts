@@ -5,16 +5,15 @@ import { eq } from "drizzle-orm";
 import { users } from "~/server/db/schema";
 
 export async function POST(req: NextRequest) {
-  //
-  console.log("Hello");
+  
   try {
     const reqBody = await req.json();
     const { email, username, password } = reqBody;
-    //create error validation
-    console.log(reqBody);
+    //TODO create error validation
+
     const user = await db.query.users.findFirst({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      where: eq(users.email, email),
+      where: eq(users.email, email), //TODO, CHECK FOR USERNAMES
     });
 
     if (user) {
